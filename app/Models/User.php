@@ -64,6 +64,15 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    /**
+     * @return array
+     */
+    public function getHidden(): array
+    {
+        if (auth()->user()->isAdmin() || auth()->user()->isSeller()) return ['password', 'remember_token'];
+        return ['id', 'password', 'remember_token', 'created_at', 'updated_at'];
+    }
+
     public function isAdmin()
     {
         return UserRole::whereUserId($this->id)->whereRoleId(Role::ADMIN_ROLE_ID)->count();

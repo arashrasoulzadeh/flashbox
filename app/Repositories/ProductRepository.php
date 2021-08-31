@@ -30,4 +30,14 @@ class ProductRepository implements ProductRepositoryInterface
 
         return $product;
     }
+
+    public function getProductPrice(int $product_id)
+    {
+        return Price::whereProductId($product_id)->latest()->first();
+    }
+
+    public function getProductQuantity(int $product_id)
+    {
+        return Inventory::whereProductId($product_id)->latest()->first();
+    }
 }
