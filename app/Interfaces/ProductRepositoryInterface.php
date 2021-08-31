@@ -8,6 +8,5 @@ interface ProductRepositoryInterface
 
     public function getProductPrice(int $product_id);
     public function getProductQuantity(int $product_id);
-    public function buySingleProduct($store_id, $product_id, $user_id);
 
 }

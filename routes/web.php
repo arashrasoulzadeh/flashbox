@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\StoreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,3 +13,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/pay/{invoice_id}', [StoreController::class, 'pay'])->name("payment");
+Route::get('/pay/{invoice_id}/fail', [StoreController::class, 'payFail'])->name("paymentFail");
+Route::get('/pay/{invoice_id}/pass', [StoreController::class, 'payPass'])->name("paymentPass");

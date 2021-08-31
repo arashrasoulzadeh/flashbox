@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserBuySingleProductRequest;
 use App\Http\Resources\NearbyUserStoresCollection;
 use App\Http\Resources\SingleUserStoreResource;
+use App\Http\Resources\UserPaymentLinkResource;
+use App\Interfaces\InvoiceServiceInterface;
 use App\Interfaces\StoreServiceInterface;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -18,10 +21,15 @@ class StoreController extends Controller
      * @var StoreServiceInterface
      */
     private $storeService;
+    /**
+     * @var InvoiceServiceInterface
+     */
+    private $invoiceService;
 
-    public function __construct(StoreServiceInterface $storeService)
+    public function __construct(StoreServiceInterface $storeService, InvoiceServiceInterface $invoiceService)
     {
         $this->storeService = $storeService;
+        $this->invoiceService = $invoiceService;
     }
 
     public function nearbyStores(Request $request, $lat, $lon)
@@ -44,7 +52,34 @@ class StoreController extends Controller
     public function buySingleProduct(UserBuySingleProductRequest $request, $lat, $lon, $id)
     {
         $store = $this->storeService->userStoreSingle($lat, $lon, $id);
-        $product_buy_link = $this->storeService->buySingleProduct($store->id, $request->product_id, auth()->user()->getAuthIdentifier());
-        return $product_buy_link;
+        $invoice = $this->invoiceService->buySingleProduct($store->id, $request->product_id, auth()->user()->getAuthIdentifier());
+        return new UserPaymentLinkResource(['link_to_pay' => route('payment', [$invoice->id])]);
     }
+
+    public function pay(Request $request, $invoice_id)
+    {
+        $invoice = $this->invoiceService->singleInvoice($invoice_id);
+        if (is_null($invoice)) abort(404);
+        auth()->login(User::find($invoice->user_id));
+        return view("payment")->with("invoice", $invoice);
+    }
+
+    public function payPass(Request $request, $invoice_id)
+    {
+        $invoice = $this->invoiceService->singleInvoice($invoice_id);
+        if (is_null($invoice)) abort(404);
+        auth()->login(User::find($invoice->user_id));
+        $invoice->update(["status" => "paid"]);
+        return view("payment_pass")->with("invoice", $invoice);
+    }
+
+    public function payFail(Request $request, $invoice_id)
+    {
+        $invoice = $this->invoiceService->singleInvoice($invoice_id);
+        if (is_null($invoice)) abort(404);
+        auth()->login(User::find($invoice->user_id));
+        $invoice->update(["status" => "failed"]);
+        return view("payment_fail")->with("invoice", $invoice);
+    }
+
 }

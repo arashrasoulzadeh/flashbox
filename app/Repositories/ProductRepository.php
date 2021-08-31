@@ -37,15 +37,6 @@ class ProductRepository implements ProductRepositoryInterface
         return Inventory::whereProductId($product_id)->latest()->first();
     }
 
-    public function buySingleProduct($store_id, $product_id, $user_id)
-    {
-        return Invoice::create([
-            'product_id' => $product_id,
-            'user_id' => $user_id,
-            'status' => Invoice::STATUS_PENDING,
-            'price_id' => $this->getProductPrice($product_id)->id
-        ]);
-    }
 
     public function getProductPrice(int $product_id)
     {

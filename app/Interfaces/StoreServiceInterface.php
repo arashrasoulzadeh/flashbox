@@ -17,7 +17,6 @@ interface StoreServiceInterface
     public function findNearbyStores($lat, $lon);
 
     public function userStoreSingle($lat, $lon, $id);
-    public function buySingleProduct($store_id, $product_id, $user_id);
 
 
 }
