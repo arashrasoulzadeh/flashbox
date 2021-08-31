@@ -22,4 +22,9 @@ class UserService implements UserServiceInterface
     {
         return $this->userRepository->userList();
     }
+
+    public function makeSeller(int $user_id)
+    {
+        return $this->userRepository->makeSeller($user_id);
+    }
 }

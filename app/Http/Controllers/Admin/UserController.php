@@ -7,9 +7,7 @@ use App\Http\Requests\CreateSellerRequest;
 use App\Http\Resources\CreateSellerResource;
 use App\Interfaces\StoreServiceInterface;
 use App\Interfaces\UserServiceInterface;
-use App\Models\Role;
 use App\Models\User;
-use App\Models\UserRole;
 
 class UserController extends Controller
 {
@@ -40,12 +38,7 @@ class UserController extends Controller
     {
         $user_id = $request->owner_id;
         // make user seller if not
-        if (!UserRole::whereUserId($user_id)->whereRoleId(Role::SELLER_ROLE_ID)->count()) {
-            UserRole::create([
-                'user_id' => $user_id,
-                'role_id' => Role::SELLER_ROLE_ID
-            ]);
-        }
+        $this->userService->makeSeller($user_id);
         return new CreateSellerResource(["store" => $this->storeService->createNewStore([
             'owner_id' => $request->owner_id,
             'name' => $request->name,
