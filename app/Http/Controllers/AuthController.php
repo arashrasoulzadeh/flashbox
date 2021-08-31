@@ -12,12 +12,23 @@ use Illuminate\Validation\UnauthorizedException;
 class AuthController extends Controller
 {
 
-
+    /**
+     * Login to System
+     * /api/auth/login
+     * @param LoginUserRequest $request
+     * @return LoginResponseResource
+     */
     public function login(LoginUserRequest $request)
     {
         return new LoginResponseResource($this->checkLogin($request->email, $request->password));
     }
 
+    /**
+     * check if user credentials is valid
+     * @param string $username
+     * @param string $password
+     * @return array
+     */
     private function checkLogin(string $username, string $password)
     {
         $credentials = request(['email', 'password']);
@@ -33,6 +44,12 @@ class AuthController extends Controller
 
     }
 
+    /**
+     * Register into system
+     * /api/auth/register
+     * @param RegisterUserRequest $request
+     * @return LoginResponseResource
+     */
     public function register(RegisterUserRequest $request)
     {
 
