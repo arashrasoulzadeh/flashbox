@@ -9,6 +9,11 @@ class Store extends Model
 {
     protected $fillable = ['owner_id', 'name', 'lat', 'long', 'address', 'service_radius'];
     use HasFactory;
+    protected $with=['owner'];
+
+    public function owner(){
+        return $this->hasOne(User::class,'id','owner_id');
+    }
 
 
     /**
