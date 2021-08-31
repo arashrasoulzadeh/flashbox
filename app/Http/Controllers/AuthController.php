@@ -15,19 +15,7 @@ class AuthController extends Controller
 
     public function login(LoginUserRequest $request)
     {
-
-    }
-
-    public function register(RegisterUserRequest $request)
-    {
-
-        User::create([
-            "name" => $request->name,
-            "email" => $request->email,
-            "password" => Hash::make($request->password)
-        ]);
-        $resp = new LoginResponseResource($this->checkLogin($request->email, $request->password));
-        return $resp;
+        return new LoginResponseResource($this->checkLogin($request->email, $request->password));
     }
 
     private function checkLogin(string $username, string $password)
@@ -43,6 +31,18 @@ class AuthController extends Controller
 
         return ["token" => $token];
 
+    }
+
+    public function register(RegisterUserRequest $request)
+    {
+
+        User::create([
+            "name" => $request->name,
+            "email" => $request->email,
+            "password" => Hash::make($request->password)
+        ]);
+        $resp = new LoginResponseResource($this->checkLogin($request->email, $request->password));
+        return $resp;
     }
 
 
