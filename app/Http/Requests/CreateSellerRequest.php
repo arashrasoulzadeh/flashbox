@@ -26,8 +26,8 @@ class CreateSellerRequest extends FormRequest
         return [
             "owner_id" => "required|exists:users,id",
             "name" => "required|string",
-            "lat" => "required|integer",
-            "long" => "required|integer",
+            "lat" => "required|numeric",
+            "long" => "required|numeric",
             "service_radius" => "required|integer",
             "address" => "required|string",
         ];
