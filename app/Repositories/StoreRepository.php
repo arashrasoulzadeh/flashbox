@@ -54,15 +54,20 @@ class StoreRepository implements StoreRepositoryInterface
 
     private function getDistance($latitude1, $longitude1, $latitude2, $longitude2)
     {
-        $earth_radius = 6371;
+        try {
+            $earth_radius = 6371;
 
-        $dLat = deg2rad($latitude2 - $latitude1);
-        $dLon = deg2rad($longitude2 - $longitude1);
+            $dLat = deg2rad($latitude2 - $latitude1);
+            $dLon = deg2rad($longitude2 - $longitude1);
 
-        $a = sin($dLat / 2) * sin($dLat / 2) + cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * sin($dLon / 2) * sin($dLon / 2);
-        $c = 2 * asin(sqrt($a));
-        $d = $earth_radius * $c;
-        return $d;
+            $a = sin($dLat / 2) * sin($dLat / 2) + cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * sin($dLon / 2) * sin($dLon / 2);
+            $c = 2 * asin(sqrt($a));
+            $d = $earth_radius * $c;
+            return $d;
+        } catch (\Exception | \Throwable $exception) {
+            abort(422);
+        }
+
     }
 
     public function userStoreSingle($lat, $lon, $id)

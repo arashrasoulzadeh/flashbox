@@ -2,9 +2,11 @@
 
 namespace App\Exceptions;
 
+use App\Http\Resources\BadInputExceptionResource;
 use App\Http\Resources\ForbiddenResource;
 use App\Http\Resources\InvalidMethodExceptionResource;
 use App\Http\Resources\NotFoundResource;
+use App\Http\Resources\ServerErrorExceptionResource;
 use App\Http\Resources\UnauthenticatedResource;
 use App\Http\Resources\UnauthorizedResource;
 use Illuminate\Auth\AuthenticationException;
@@ -47,6 +49,12 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        $this->renderable(function (\ErrorException $e, Request $request) {
+            return (new ServerErrorExceptionResource($request))
+                ->response()
+                ->setStatusCode(500);
+        });
         $this->renderable(function (UnauthorizedException $e, Request $request) {
             return (new UnauthorizedResource($request))
                 ->response()
@@ -77,6 +85,11 @@ class Handler extends ExceptionHandler
                 return (new NotFoundResource($request))
                     ->response()
                     ->setStatusCode(404);
+            }
+            if ($e->getStatusCode() === 422) {
+                return (new BadInputExceptionResource($request))
+                    ->response()
+                    ->setStatusCode(422);
             }
             throw $e;
         });
