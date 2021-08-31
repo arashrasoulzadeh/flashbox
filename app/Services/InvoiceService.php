@@ -45,4 +45,9 @@ class InvoiceService implements InvoiceServiceInterface
     {
         return $this->invoiceRepository->userPurchases($user_id);
     }
+
+    public function updateInvoice(int $invoice_id, string $status)
+    {
+        return $this->invoiceRepository->updateInvoice($invoice_id,$status);
+    }
 }

@@ -74,19 +74,13 @@ class StoreController extends Controller
 
     public function payPass(Request $request, $invoice_id)
     {
-        $invoice = $this->invoiceService->singleInvoice($invoice_id);
-        if (is_null($invoice)) abort(404);
-        auth()->login(User::find($invoice->user_id));
-        $invoice->update(["status" => "paid"]);
+        $invoice = $this->invoiceService->updateInvoice($invoice_id, "paid");
         return view("payment_pass")->with("invoice", $invoice);
     }
 
     public function payFail(Request $request, $invoice_id)
     {
-        $invoice = $this->invoiceService->singleInvoice($invoice_id);
-        if (is_null($invoice)) abort(404);
-        auth()->login(User::find($invoice->user_id));
-        $invoice->update(["status" => "failed"]);
+        $invoice = $this->invoiceService->updateInvoice($invoice_id, "failed");
         return view("payment_fail")->with("invoice", $invoice);
     }
 
