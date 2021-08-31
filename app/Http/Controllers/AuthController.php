@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Resources\LoginResponseResource;
 use App\Models\User;
@@ -12,16 +13,20 @@ class AuthController extends Controller
 {
 
 
+    public function login(LoginUserRequest $request)
+    {
+
+    }
+
     public function register(RegisterUserRequest $request)
     {
 
-        $user = User::create([
+        User::create([
             "name" => $request->name,
             "email" => $request->email,
             "password" => Hash::make($request->password)
         ]);
-        $resp= new LoginResponseResource($this->checkLogin($request->email, $request->password));
-        $user->delete();
+        $resp = new LoginResponseResource($this->checkLogin($request->email, $request->password));
         return $resp;
     }
 
@@ -36,7 +41,7 @@ class AuthController extends Controller
             throw new UnauthorizedException();
         }
 
-        return ["token"=>$token];
+        return ["token" => $token];
 
     }
 
