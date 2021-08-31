@@ -2,10 +2,12 @@
 
 namespace App\Exceptions;
 
+use App\Http\Resources\UnauthenticatedResource;
 use App\Http\Resources\UnauthorizedResource;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
- use Throwable;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -44,6 +46,10 @@ class Handler extends ExceptionHandler
                 ->response()
                 ->setStatusCode(401);
         });
-
+        $this->renderable(function (AuthenticationException $e, Request $request) {
+            return (new UnauthenticatedResource($request))
+                ->response()
+                ->setStatusCode(401);
+        });
     }
 }
