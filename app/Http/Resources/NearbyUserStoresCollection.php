@@ -9,6 +9,6 @@ class NearbyUserStoresCollection extends BaseResourceCollection
 
     public function data($request): array
     {
-        return $this->resource;
+        return $this->resource->toArray();
     }
 }

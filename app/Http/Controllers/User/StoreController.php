@@ -7,6 +7,8 @@ use App\Http\Resources\NearbyUserStoresCollection;
 use App\Http\Resources\SingleUserStoreResource;
 use App\Interfaces\StoreServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class StoreController extends Controller
 {
@@ -23,7 +25,14 @@ class StoreController extends Controller
 
     public function nearbyStores(Request $request, $lat, $lon)
     {
-        return new NearbyUserStoresCollection($this->storeService->findNearbyStores($lat, $lon));
+        $perPage = 10;
+        $page = Paginator::resolveCurrentPage() ?: 1;
+        $items = $this->storeService->findNearbyStores($lat, $lon);
+        $lap = new LengthAwarePaginator($items->forPage($page, $perPage),
+            $items->count(),
+            $perPage, $page, []);
+
+        return new NearbyUserStoresCollection($lap);
     }
 
     public function singleStore(Request $request, $lat, $lon, $id)

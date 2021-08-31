@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\StoreRepositoryInterface;
 use App\Models\Product;
 use App\Models\Store;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
@@ -37,14 +38,14 @@ class StoreRepository implements StoreRepositoryInterface
 
     public function findNearbyStores($lat, $lon)
     {
-        return Cache::remember("stores_in_" . $lat . "_" . $lon, 60, function () use ($lat, $lon) {
+        return Cache::remember("nearby_stores_in:" . $lat . "," . $lon, 60, function () use ($lat, $lon) {
             // TODO: optimize performance
             $stores = $this->model()->all();
-            $matched_stores = [];
+            $matched_stores = new Collection();
             foreach ($stores as $store) {
                 $distance = $this->getDistance($store->lat, $store->long, $lat, $lon);
                 if ($distance <= $store->service_radius) {
-                    $matched_stores[] = $store;
+                    $matched_stores->push($store);
                 }
             }
             return $matched_stores;
