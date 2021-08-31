@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,4 +24,10 @@ Route::prefix("auth")->group(function () {
     Route::get('profile', [AuthController::class, 'profile']);
 });
 
+
+Route::prefix("admin")->middleware(["api", AdminMiddleware::class])->group(function () {
+    Route::prefix("seller")->group(function () {
+        Route::get('create', [UserController::class, 'createSeller']);
+    });
+});
 
