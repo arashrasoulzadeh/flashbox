@@ -6,11 +6,22 @@ use App\Exceptions\UnauthorizedException;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Resources\LoginResponseResource;
+use App\Http\Resources\UserProfileResource;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
 
     /**
      * Login to System
@@ -60,6 +71,18 @@ class AuthController extends Controller
         ]);
         $resp = new LoginResponseResource($this->checkLogin($request->email, $request->password));
         return $resp;
+    }
+
+
+    /**
+     * Register into system
+     * /api/auth/profile
+     * @param Request $request
+     * @return UserProfileResource
+     */
+    public function profile(Request $request)
+    {
+        return new UserProfileResource(auth()->user());
     }
 
 
