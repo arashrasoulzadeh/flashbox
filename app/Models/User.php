@@ -66,6 +66,6 @@ class User extends Authenticatable implements JWTSubject
 
     public function isAdmin()
     {
-        return true;
+        return Role::whereId($this->id)->whereName("admin")->count();
     }
 }
