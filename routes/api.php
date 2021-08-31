@@ -27,7 +27,7 @@ Route::prefix("auth")->group(function () {
 
 Route::prefix("admin")->middleware(["api", AdminMiddleware::class])->group(function () {
     Route::prefix("seller")->group(function () {
-        Route::get('create', [UserController::class, 'createSeller']);
+        Route::post('create', [UserController::class, 'createSeller']);
     });
 });
 
