@@ -75,7 +75,7 @@ class AuthController extends Controller
 
 
     /**
-     * Register into system
+     * User Profile
      * /api/auth/profile
      * @param Request $request
      * @return UserProfileResource
@@ -85,5 +85,14 @@ class AuthController extends Controller
         return new UserProfileResource(auth()->user());
     }
 
-
+    /**
+     * Refresh token
+     * /api/auth/refresh
+     * @param Request $request
+     * @return LoginResponseResource
+     */
+    public function refresh(Request $request)
+    {
+        return new LoginResponseResource(["token" => auth()->refresh()]);
+    }
 }
