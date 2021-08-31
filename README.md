@@ -38,6 +38,11 @@ routes :
 
 `{{ _.base }}/api/user/single/35.694778/51.419852/9/buy` link to buy a single product
 
+#### Feature Test
+![go](https://github.com/arashrasoulzadeh/flashbox/actions/workflows/laravel.yml/badge.svg)
+
+Available at : /tests/Feature
+
 
 notes: 
 - in the test, you mentioned `buy the product` and you did not say anything about cart,so i did not implement it to save time although it was not a hard task
