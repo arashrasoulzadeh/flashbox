@@ -5,5 +5,5 @@ please run following commands :
 composer install
 php artisan jwt:secret
 php artisan migrate
-
+php artisan db:seed
 ```
