@@ -36,7 +36,7 @@ class StoreController extends Controller
     public function purchases(Request $request)
     {
         return new UserPurchasesResourceCollection(
-            $this->invoiceService->userPurchases(auth()->user()->getAuthIdentifier())->paginate()
+            $this->invoiceService->userPurchases(auth()->user()->getAuthIdentifier())->orderBy("id","desc")->paginate()
         );
     }
 
