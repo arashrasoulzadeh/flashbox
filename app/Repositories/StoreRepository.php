@@ -68,6 +68,7 @@ class StoreRepository implements StoreRepositoryInterface
     public function userStoreSingle($lat, $lon, $id)
     {
         $store = $this->model()->find($id);
+        if (is_null($store)) abort(404);
         $distance = $this->getDistance($store->lat, $store->long, $lat, $lon);
         if ($distance <= $store->service_radius) {
             return $store;
