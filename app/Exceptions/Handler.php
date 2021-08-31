@@ -2,11 +2,14 @@
 
 namespace App\Exceptions;
 
+use App\Http\Resources\InvalidMethodExceptionResource;
 use App\Http\Resources\UnauthenticatedResource;
 use App\Http\Resources\UnauthorizedResource;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,6 +53,11 @@ class Handler extends ExceptionHandler
             return (new UnauthenticatedResource($request))
                 ->response()
                 ->setStatusCode(401);
+        });
+        $this->renderable(function (MethodNotAllowedHttpException $e, Request $request) {
+            return (new InvalidMethodExceptionResource($request))
+                ->response()
+                ->setStatusCode(405);
         });
     }
 }
