@@ -73,6 +73,11 @@ class Handler extends ExceptionHandler
                     ->response()
                     ->setStatusCode(401);
             }
+            if ($e->getStatusCode() === 404) {
+                return (new NotFoundResource($request))
+                    ->response()
+                    ->setStatusCode(404);
+            }
             throw $e;
         });
 
