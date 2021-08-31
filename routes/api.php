@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Seller\StoreController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\SellerMiddleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,10 +26,17 @@ Route::prefix("auth")->group(function () {
     Route::get('profile', [AuthController::class, 'profile']);
 });
 
+Route::middleware(["auth:api"])->group(function () {
 
-Route::prefix("admin")->middleware(["api", AdminMiddleware::class])->group(function () {
-    Route::prefix("seller")->group(function () {
-        Route::post('create', [UserController::class, 'createSeller']);
+    Route::prefix("admin")->middleware([AdminMiddleware::class])->group(function () {
+        Route::prefix("seller")->group(function () {
+            Route::post('create', [UserController::class, 'createSeller']);
+        });
+    });
+
+    Route::prefix("seller")->middleware([SellerMiddleware::class])->group(function () {
+        Route::prefix("stores")->group(function () {
+            Route::get('list', [StoreController::class, 'listStores']);
+        });
     });
 });
-

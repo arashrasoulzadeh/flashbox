@@ -68,4 +68,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return UserRole::whereUserId($this->id)->whereRoleId(Role::ADMIN_ROLE_ID)->count();
     }
+
+    public function isSeller()
+    {
+        return UserRole::whereUserId($this->id)->whereRoleId(Role::SELLER_ROLE_ID)->count();
+    }
 }
