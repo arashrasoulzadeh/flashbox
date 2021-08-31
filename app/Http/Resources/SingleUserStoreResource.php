@@ -2,13 +2,16 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Services\StoreService;
 
 class SingleUserStoreResource extends BaseResource
 {
 
     public function data($request): array
     {
-        return $this->resource->toArray();
+        return [
+            'store' => $this->resource,
+            "products" => app()->make(StoreService::class)->storeProducts($this->id)->paginate()
+        ];
     }
 }
