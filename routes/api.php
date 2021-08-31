@@ -29,6 +29,7 @@ Route::prefix("auth")->group(function () {
 Route::middleware(["auth:api"])->group(function () {
 
     Route::prefix("user")->middleware([])->group(function () {
+        Route::get('purchases', [\App\Http\Controllers\User\StoreController::class, 'purchases']);
         Route::get('near/{lat}/{lon}', [\App\Http\Controllers\User\StoreController::class, 'nearbyStores']);
         Route::prefix("single/{lat}/{lon}/{id}")->group(function () {
             Route::get('/', [\App\Http\Controllers\User\StoreController::class, 'singleStore']);

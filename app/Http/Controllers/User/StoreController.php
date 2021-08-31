@@ -7,6 +7,7 @@ use App\Http\Requests\UserBuySingleProductRequest;
 use App\Http\Resources\NearbyUserStoresCollection;
 use App\Http\Resources\SingleUserStoreResource;
 use App\Http\Resources\UserPaymentLinkResource;
+use App\Http\Resources\UserPurchasesResourceCollection;
 use App\Interfaces\InvoiceServiceInterface;
 use App\Interfaces\StoreServiceInterface;
 use App\Models\User;
@@ -30,6 +31,13 @@ class StoreController extends Controller
     {
         $this->storeService = $storeService;
         $this->invoiceService = $invoiceService;
+    }
+
+    public function purchases(Request $request)
+    {
+        return new UserPurchasesResourceCollection(
+            $this->invoiceService->userPurchases(auth()->user()->getAuthIdentifier())->paginate()
+        );
     }
 
     public function nearbyStores(Request $request, $lat, $lon)

@@ -34,4 +34,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
     {
        return Invoice::whereId($invoice_id)->whereStatus("pending")->first();
     }
+    public function userPurchases(int $user_id){
+        return Invoice::whereUserId($user_id)->whereStatus("paid");
+    }
 }

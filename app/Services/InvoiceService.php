@@ -40,4 +40,9 @@ class InvoiceService implements InvoiceServiceInterface
     {
         return $this->invoiceRepository->singleInvoice($invoice_id);
     }
+
+    public function userPurchases(int $user_id)
+    {
+        return $this->invoiceRepository->userPurchases($user_id);
+    }
 }
