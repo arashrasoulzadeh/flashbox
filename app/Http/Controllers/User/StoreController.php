@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserBuySingleProductRequest;
 use App\Http\Resources\NearbyUserStoresCollection;
 use App\Http\Resources\SingleUserStoreResource;
 use App\Interfaces\StoreServiceInterface;
@@ -38,5 +39,12 @@ class StoreController extends Controller
     public function singleStore(Request $request, $lat, $lon, $id)
     {
         return new SingleUserStoreResource($this->storeService->userStoreSingle($lat, $lon, $id));
+    }
+
+    public function buySingleProduct(UserBuySingleProductRequest $request, $lat, $lon, $id)
+    {
+        $store = $this->storeService->userStoreSingle($lat, $lon, $id);
+        $product_buy_link = $this->storeService->buySingleProduct($store->id, $request->product_id, auth()->user()->getAuthIdentifier());
+        return $product_buy_link;
     }
 }

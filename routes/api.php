@@ -30,7 +30,12 @@ Route::middleware(["auth:api"])->group(function () {
 
     Route::prefix("user")->middleware([])->group(function () {
         Route::get('near/{lat}/{lon}', [\App\Http\Controllers\User\StoreController::class, 'nearbyStores']);
-        Route::get('single/{lat}/{lon}/{id}', [\App\Http\Controllers\User\StoreController::class, 'singleStore']);
+        Route::prefix("single/{lat}/{lon}/{id}")->group(function () {
+            Route::get('/', [\App\Http\Controllers\User\StoreController::class, 'singleStore']);
+            Route::prefix("buy")->group(function () {
+                Route::post('/', [\App\Http\Controllers\User\StoreController::class, 'buySingleProduct']);
+            });
+        });
     });
 
 

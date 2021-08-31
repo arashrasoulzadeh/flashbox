@@ -16,4 +16,6 @@ interface StoreRepositoryInterface
 
     public function userStoreSingle($lat, $lon, $id);
 
+
+
 }
