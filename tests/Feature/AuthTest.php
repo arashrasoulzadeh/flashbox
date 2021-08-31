@@ -12,8 +12,8 @@ class AuthTest extends TestCase
     {
         $response = $this->post('/api/auth/register', [
             'name' => Str::random(8),
-            'email' => Str::random(8) . '@gmail.com',
-            'password' => Hash::make('sample')
+            'email' => 'seller@gmail.com',
+            'password' => Hash::make('12345678')
         ]);
 
         $response->assertStatus(200);
