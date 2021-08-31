@@ -2,8 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Http\Resources\UnauthorizedResource;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
+use Illuminate\Http\Request;
+ use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -37,5 +39,11 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+        $this->renderable(function (UnauthorizedException $e, Request $request) {
+            return (new UnauthorizedResource($request))
+                ->response()
+                ->setStatusCode(401);
+        });
+
     }
 }

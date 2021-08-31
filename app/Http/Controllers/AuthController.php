@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\UnauthorizedException;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Resources\LoginResponseResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\UnauthorizedException;
 
 class AuthController extends Controller
 {
