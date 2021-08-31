@@ -6,6 +6,7 @@ use App\Interfaces\StoreRepositoryInterface;
 use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class StoreRepository implements StoreRepositoryInterface
 {
@@ -34,5 +35,32 @@ class StoreRepository implements StoreRepositoryInterface
         return Product::whereStoreId($store_id);
     }
 
+    public function findNearbyStores($lat, $lon)
+    {
+        return Cache::remember("stores_in_" . $lat . "_" . $lon, 60, function () use ($lat, $lon) {
+            // TODO: optimize performance
+            $stores = $this->model()->all();
+            $matched_stores = [];
+            foreach ($stores as $store) {
+                $distance = $this->getDistance($store->lat, $store->long, $lat, $lon);
+                if ($distance <= $store->service_radius) {
+                    $matched_stores[] = $store;
+                }
+            }
+            return $matched_stores;
+        });
+    }
 
+    private function getDistance($latitude1, $longitude1, $latitude2, $longitude2)
+    {
+        $earth_radius = 6371;
+
+        $dLat = deg2rad($latitude2 - $latitude1);
+        $dLon = deg2rad($longitude2 - $longitude1);
+
+        $a = sin($dLat / 2) * sin($dLat / 2) + cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * sin($dLon / 2) * sin($dLon / 2);
+        $c = 2 * asin(sqrt($a));
+        $d = $earth_radius * $c;
+        return $d;
+    }
 }

@@ -28,6 +28,11 @@ Route::prefix("auth")->group(function () {
 
 Route::middleware(["auth:api"])->group(function () {
 
+    Route::prefix("user")->middleware([])->group(function () {
+        Route::get('near/{lat}/{lon}', [\App\Http\Controllers\User\StoreController::class, 'nearbyStores']);
+    });
+
+
     Route::prefix("admin")->middleware([AdminMiddleware::class])->group(function () {
         Route::prefix("seller")->group(function () {
             Route::post('create', [UserController::class, 'createSeller']);

@@ -48,4 +48,10 @@ class StoreService implements StoreServiceInterface
     {
         return $this->productRepository->createNewProduct($store_id, $name, $price, $quantity);
     }
+
+
+    public function findNearbyStores($lat, $lon)
+    {
+        return $this->storeRepository->findNearbyStores($lat,$lon);
+    }
 }

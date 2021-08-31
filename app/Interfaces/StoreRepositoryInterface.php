@@ -12,5 +12,8 @@ interface StoreRepositoryInterface
 
     public function createNewStore(array $data);
 
+    public function findNearbyStores($lat, $lon);
+
+    public function userStoreSingle($lat, $lon, $id);
 
 }

@@ -9,5 +9,7 @@ interface StoreServiceInterface
     public function createNewStore(array $data);
     public function storeProducts(int $store_id);
     public function createNewProduct(int $store_id, string $name, int $price, int $quantity);
+    public function findNearbyStores($lat,$lon);
+    public function userStoreSingle($lat, $lon, $id);
 
 }
