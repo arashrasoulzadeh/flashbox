@@ -54,4 +54,9 @@ class StoreService implements StoreServiceInterface
     {
         return $this->storeRepository->findNearbyStores($lat,$lon);
     }
+
+    public function userStoreSingle($lat, $lon, $id)
+    {
+        return $this->storeRepository->userStoreSingle($lat,$lon,$id);
+    }
 }

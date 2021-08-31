@@ -63,4 +63,14 @@ class StoreRepository implements StoreRepositoryInterface
         $d = $earth_radius * $c;
         return $d;
     }
+
+    public function userStoreSingle($lat, $lon, $id)
+    {
+        $store = $this->model()->find($id);
+        $distance = $this->getDistance($store->lat, $store->long, $lat, $lon);
+        if ($distance <= $store->service_radius) {
+            return $store;
+        }
+        return [];
+    }
 }

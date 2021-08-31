@@ -30,6 +30,7 @@ Route::middleware(["auth:api"])->group(function () {
 
     Route::prefix("user")->middleware([])->group(function () {
         Route::get('near/{lat}/{lon}', [\App\Http\Controllers\User\StoreController::class, 'nearbyStores']);
+        Route::get('single/{lat}/{lon}/{id}', [\App\Http\Controllers\User\StoreController::class, 'singleStore']);
     });
 
 
