@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewProductRequest;
 use App\Http\Resources\SellerStoreListResourceCollection;
 use App\Http\Resources\SellerStoreSingleResource;
 use App\Interfaces\StoreServiceInterface;
@@ -35,6 +36,16 @@ class StoreController extends Controller
         $store = $this->storeService->findOwnersStoreById(auth()->user()->getAuthIdentifier(), $store_id);
         if (is_null($store)) abort(404);
         return new SellerStoreSingleResource($store);
+    }
+
+    public function newProduct(NewProductRequest $request, $store_id)
+    {
+        return $this->storeService->createNewProduct(
+            $store_id,
+            $request->name,
+            $request->price,
+            $request->quantity
+        );
     }
 
 }

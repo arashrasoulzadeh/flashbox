@@ -8,5 +8,9 @@ interface StoreRepositoryInterface
 
     public function findOwnerStores(int $owner_id);
 
+    public function storeProducts(int $store_id);
+
     public function createNewStore(array $data);
+
+
 }

@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use App\Interfaces\StoreRepositoryInterface;
+use App\Models\Product;
 use App\Models\Store;
-use App\RepositoryAbstracts\StoreRepositoryAbstract;
 use Illuminate\Database\Eloquent\Model;
 
 class StoreRepository implements StoreRepositoryInterface
@@ -28,4 +28,11 @@ class StoreRepository implements StoreRepositoryInterface
     {
         return $this->model()->create($data);
     }
+
+    public function storeProducts(int $store_id)
+    {
+        return Product::whereStoreId($store_id);
+    }
+
+
 }

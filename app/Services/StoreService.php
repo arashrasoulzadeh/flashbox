@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Interfaces\ProductRepositoryInterface;
 use App\Interfaces\StoreRepositoryInterface;
 use App\Interfaces\StoreServiceInterface;
 
@@ -11,10 +12,15 @@ class StoreService implements StoreServiceInterface
      * @var StoreRepositoryInterface
      */
     private $storeRepository;
+    /**
+     * @var ProductRepositoryInterface
+     */
+    private $productRepository;
 
-    public function __construct(StoreRepositoryInterface $storeRepository)
+    public function __construct(StoreRepositoryInterface $storeRepository, ProductRepositoryInterface $productRepository)
     {
         $this->storeRepository = $storeRepository;
+        $this->productRepository = $productRepository;
     }
 
 
@@ -30,6 +36,16 @@ class StoreService implements StoreServiceInterface
 
     public function createNewStore(array $data)
     {
-       return $this->storeRepository->createNewStore($data);
+        return $this->storeRepository->createNewStore($data);
+    }
+
+    public function storeProducts(int $store_id)
+    {
+        return $this->storeRepository->storeProducts($store_id);
+    }
+
+    public function createNewProduct(int $store_id, string $name, int $price, int $quantity)
+    {
+        return $this->productRepository->createNewProduct($store_id, $name, $price, $quantity);
     }
 }

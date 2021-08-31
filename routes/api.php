@@ -37,7 +37,12 @@ Route::middleware(["auth:api"])->group(function () {
     Route::prefix("seller")->middleware([SellerMiddleware::class])->group(function () {
         Route::prefix("stores")->group(function () {
             Route::get('list', [StoreController::class, 'listStores']);
-            Route::get('{store_id}', [StoreController::class, 'singleStore']);
+            Route::prefix("{store_id}")->group(function () {
+                Route::get('/', [StoreController::class, 'singleStore']);
+                Route::prefix("products")->group(function () {
+                    Route::post('/new', [StoreController::class, 'newProduct']);
+                });
+            });
         });
     });
 });
