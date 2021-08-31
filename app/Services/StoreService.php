@@ -27,4 +27,9 @@ class StoreService implements StoreServiceInterface
     {
         return $this->storeRepository->findOwnerStores($owner_id);
     }
+
+    public function createNewStore(array $data)
+    {
+       return $this->storeRepository->createNewStore($data);
+    }
 }

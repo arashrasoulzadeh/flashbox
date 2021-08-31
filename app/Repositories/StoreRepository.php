@@ -23,4 +23,9 @@ class StoreRepository implements StoreRepositoryInterface
     {
         return $this->model()->whereOwnerId($owner_id);
     }
+
+    public function createNewStore(array $data)
+    {
+        return $this->model()->create($data);
+    }
 }
