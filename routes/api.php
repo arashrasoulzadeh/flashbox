@@ -44,6 +44,8 @@ Route::middleware(["auth:api"])->group(function () {
         Route::prefix("seller")->group(function () {
             Route::post('create', [UserController::class, 'createSeller']);
         });
+        Route::get('users', [UserController::class, 'users']);
+
     });
 
     Route::prefix("seller")->middleware([SellerMiddleware::class])->group(function () {

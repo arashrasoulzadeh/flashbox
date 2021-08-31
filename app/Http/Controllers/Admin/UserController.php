@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateSellerRequest;
 use App\Http\Resources\CreateSellerResource;
 use App\Interfaces\StoreServiceInterface;
+use App\Interfaces\UserServiceInterface;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
@@ -18,12 +19,22 @@ class UserController extends Controller
      * @var StoreServiceInterface
      */
     private $storeService;
+    /**
+     * @var UserServiceInterface
+     */
+    private $userService;
 
-    public function __construct(StoreServiceInterface $storeService)
+    public function __construct(StoreServiceInterface $storeService, UserServiceInterface $userService)
     {
         $this->storeService = $storeService;
+        $this->userService = $userService;
     }
 
+
+    public function users()
+    {
+        return $this->userService->userList();
+    }
 
     public function createSeller(CreateSellerRequest $request)
     {
